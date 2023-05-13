@@ -411,6 +411,6 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [BadEnding],
+    scene: [Intro, Logo, Forest, BorterDHO, BorterDHI, Door, GoodEnding, BadEnding],
     title: "Adventure Game",
 });
