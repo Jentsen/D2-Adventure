@@ -214,9 +214,10 @@ class BorterDHI extends AdventureScene {
                     .setFontSize(this.s * 2)
                     .setInteractive()
                     .on('pointerover', () => {
-                        this.showMessage("You see some keys");
+                        this.showMessage("You see some keys hanging on the worker's belt.");
                     })
                     .on('pointerdown', () => {
+                        this.gainItem('Key');
                         this.showMessage("You snatch the worker's key and run away!");
                         this.time.delayedCall(2000, () => {
                             this.tweens.add({
@@ -226,39 +227,65 @@ class BorterDHI extends AdventureScene {
                                 onComplete: () => bagel.destroy(),
                                 onComplete: () => potato.destroy()
                             })
-                            this.gotoScene('ge');
+                            this.gotoScene('door');
                         });
-                        let potato = this.add.text(this.w * 0.4, this.h * 0.4, "🥔 Potato")
-                            .on('pointerdown', () => {
-                                this.showMessage("You snatch the worker's potato and run away!");
-                                this.time.delayedCall(2000, () => {
-                                    this.tweens.add({
-                                        targets: potato,
-                                        scale: { from: 1, to: 0 },
-                                        duration: 500,
-                                        onComplete: () => bagel.destroy(),
-                                        onComplete: () => potato.destroy()
-                                    })
-                                    this.gotoScene('be');
-                                });
-                            })
                     })
-            });
+                let potato = this.add.text(this.w * 0.4, this.h * 0.4, "🥔 Potato")
+                    .setFontSize(this.s * 2)
+                    .setInteractive()
+                    .on('pointerover', () => {
+                        this.showMessage("A delicious, steamed potato sits on the worker's plate.");
+                    })
+                    .on('pointerdown', () => {
+                        this.gainItem('Potato');
+                        this.showMessage("You snatch the worker's potato and run away!");
+                        this.time.delayedCall(2000, () => {
+                            this.tweens.add({
+                                targets: potato,
+                                scale: { from: 1, to: 0 },
+                                duration: 500,
+                                onComplete: () => bagel.destroy(),
+                                onComplete: () => potato.destroy()
+                            })
+                            this.gotoScene('door');
+                        });
+                    })
+            })
     }
 }
-// let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
-//     .setInteractive()
-//     .on('pointerover', () => {
-//         this.showMessage('*giggles*');
-//         this.tweens.add({
-//             targets: finish,
-//             x: this.s + (this.h - 2 * this.s) * Math.random(),
-//             y: this.s + (this.h - 2 * this.s) * Math.random(),
-//             ease: 'Sine.inOut',
-//             duration: 500
-//         });
-//     })
-//     .on('pointerdown', () => this.gotoScene('outro'));
+
+class Door extends AdventureScene {
+    constructor() {
+        super('door', 'Pantry Door')
+    }
+    onEnter() {
+        this.showMessage("A tall, tall wall looms in front of me. What’s the view on the other side?")
+        let door = this.add.text(this.scale.width / 3.75, this.scale.height / 2, "🚪 Locked Door")
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                if (this.hasItem("Key")) {
+                    this.showMessage("You've got the key for this door.");
+                } else {
+                    this.showMessage("Uh oh... It's locked.");
+                }
+            })
+            .on('pointerdown', () => {
+                if (this.hasItem("Key")) {
+                    this.loseItem("Key");
+                    this.time.delayedCall(2000, () => {
+                        this.showMessage("*ker-chunk!*");
+                        door.setText("🚪 Unlocked Door");
+                        this.gotoScene('ge');
+                    })
+                } else {
+                    this.showMessage("A worker found you! You make a break for it.");
+                    this.gotoScene('be');
+                }
+            })
+    }
+}
+
 class Intro extends Phaser.Scene {
     constructor() {
         super('intro')
@@ -272,7 +299,6 @@ class Intro extends Phaser.Scene {
         });
     }
 }
-
 
 class Logo extends Phaser.Scene {
     constructor() {
@@ -358,13 +384,21 @@ class GoodEnding extends Phaser.Scene {
         this.input.on('pointerdown', () => this.scene.start('forest'));
     }
 }
+
 class BadEnding extends Phaser.Scene {
     constructor() {
         super('be');
     }
     create() {
         this.add.text(50, 50, "You were chased out...").setFontSize(50);
-        this.add.text(50, 100, "Tears in your eyes, you make your way back home with your stomach still empty.").setFontSize(20);
+        let tears = this.add.text(50, 100, "Tears in your eyes, you make your way back home with your stomach still empty.").setFontSize(20);
+        this.tweens.add({
+            targets: tears,
+            x: '+=3',
+            yoyo: true,
+            repeat: -1,
+            duration: 50
+        });
         this.add.text(this.w, this.h, "Click anywhere to restart..").setFontSize(20);
         this.input.on('pointerdown', () => this.scene.start('forest'));
     }
@@ -377,7 +411,6 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    // scene: [Intro, Logo, Forest, BorterDHO, BorterDHI, GoodEnding],
-    scene: [BorterDHI, GoodEnding, BadEnding],
+    scene: [BadEnding],
     title: "Adventure Game",
 });

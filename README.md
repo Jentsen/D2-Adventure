@@ -9,15 +9,43 @@ Code requirements:
 
 Experience requirements:
 - **4+ locations in the game world**: Forest, BorterDHO, BorterDHI, PantryDoor (name at least 4 of the classes).
-- **2+ interactive objects in most scenes**: 
+- **2+ interactive objects in most scenes**:  (describe two examples)
     - Forest: Squirrel, Gate, Coast Redwoods
-    - BorterDHO: Go back, Chair, Table, Bagel, Door (describe two examples)
-- **Many objects have `pointerover` messages**: unsatisfied (describe two examples)
-- **Many objects have `pointerdown` effects**: unsatisfied (describe two examples)
-- **Some objects are themselves animated**: unsatisfied (describe two examples)
+    - BorterDHO: Go back, Chair, Table, Bagel, Door
+- **Many objects have `pointerover` messages**: (describe two examples)
+    - Squirrel: "You’re just a chunky little squirrel looking to fill your belly."
+    - Tree:  "The trees are filled with pinecones and other squirrels"
+- **Many objects have `pointerdown` effects**: (describe two examples)
+    - Squirrel: 
+            .on('pointerdown', () => {
+                this.showMessage("Your belly is rumbling. You need to find something to eat.");
+    - Tree:
+            .on('pointerdown', () => {
+                this.showMessage("The forest has plenty of trees and food, but you're looking for something to REALLY fill you up.");
+
+- **Some objects are themselves animated**: (describe two examples)
+    - BorterDHO Table:
+        this.time.delayedCall(1000, () => {
+        this.tweens.add({
+            targets: table,
+            scale: { from: 1, to: 1.1 },
+            ease: 'Sine.inOut',
+            loop: -1,
+            yoyo: true,
+            duration: 500
+    - BadEnding Text:
+            this.tweens.add({
+            targets: tears,
+            x: '+=3',
+            yoyo: true,
+            repeat: -1,
+            duration: 50
+        });
 
 Asset sources:
-- (For each image/audio/video asset used, describe how it was created. What tool did you use to create it? Was it based on another work? If so, how did you change it, and where can we learn more about the original work for comparison? Use [Markdown link syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#links).)
+- JEM Studios Logo: Created by Jentsen Maniti in Adobe Photoshop
+- JEM Studios Loadup Sound: Created by Jentsen Maniti in FL Studio
+- Images from Emojis
 
 Code sources:
 - `adventure.js` and `index.html` were created for this project [Adam Smith](https://github.com/rndmcnlly) and edited by me.
