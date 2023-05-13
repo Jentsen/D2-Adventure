@@ -78,7 +78,7 @@ class BorterDHO extends AdventureScene {
             .setInteractive()
 
             .on('pointerover', () => {
-                this.showMessage("The chair is made of metal. It looks like you might be able to hop up on it.");
+                this.showMessage("The chair is made of metal. It looks like you might be able to hop up on it to make it to the table.");
             })
 
             .on('pointerdown', () => {
@@ -92,44 +92,62 @@ class BorterDHO extends AdventureScene {
                     duration: 100
                 });
 
-                this.time.delayedCall(1000, () => {
-                    let bagel = this.add.text(this.w * 0.6, this.w * 0.15, "🥯 Bagel")
-                        .setFontSize(this.s * 2)
-                        .setInteractive()
-                        .on('pointerover', () => {
-                            this.showMessage("You see a plate with a bagel on it. The person who was eating it left it behind.");
-                        })
-                        .on('pointerdown', () => {
-                            this.gainItem('Bagel');
-                            this.showMessage("You hop down from the chair and grab the bagel. You break it apart and stuff it in your mouth.");
-                            this.tweens.add({
-                                targets: bagel,
-                                x: '+=' + this.s,
-                                repeat: 2,
-                                yoyo: true,
-                                ease: 'Sine.inOut',
-                                duration: 100,
-                                onComplete: () => bagel.destroy()
-                            });
-                            this.add.text(this.w * 0.1, this.w * 0.15, "🚪 Door Opens")
+                let table = this.add.text(this.w * 0.6, this.w * 0.15, "⛱ Table")
+                    .setFontSize(this.s * 2)
+                    .setInteractive()
+                    .on('pointerover', () => {
+                        this.showMessage("The table is made of wood. You see a plate with a bagel on it.");
+                    })
+                    .on('pointerdown', () => {
+                        this.time.delayedCall(1000, () => {
+                            let bagel = this.add.text(this.w * 0.6, this.w * 0.1, "🥯 Bagel")
                                 .setFontSize(this.s * 2)
                                 .setInteractive()
                                 .on('pointerover', () => {
-                                    this.showMessage("A person walks through the door. The door is slightly ajar.");
+                                    this.showMessage("The person who was eating it left it behind.");
                                 })
                                 .on('pointerdown', () => {
-                                    this.showMessage("You waltz through the door and enter the indoor dining hall!");
-                                    this.time.delayedCall(1000, () => {
-                                        this.gotoScene('borterdhi');
+                                    this.gainItem('Bagel');
+                                    this.showMessage("You hop down from the chair and grab the bagel. You break it apart and stuff it in your mouth.");
+                                    this.tweens.add({
+                                        targets: bagel,
+                                        x: '+=' + this.s,
+                                        repeat: 2,
+                                        yoyo: true,
+                                        ease: 'Sine.inOut',
+                                        duration: 100,
+                                        onComplete: () => bagel.destroy()
                                     });
+                                    this.add.text(this.w * 0.1, this.w * 0.15, "🚪 Door Opens")
+                                        .setFontSize(this.s * 2)
+                                        .setInteractive()
+                                        .on('pointerover', () => {
+                                            this.showMessage("A person walks through the door. The door is slightly ajar.");
+                                        })
+                                        .on('pointerdown', () => {
+                                            this.showMessage("You waltz through the door and enter the indoor dining hall!");
+                                            this.time.delayedCall(1000, () => {
+                                                this.gotoScene('borterdhi');
+                                            });
+                                        });
                                 });
                         });
-                });
+                    });
+                this.time.delayedCall(1000, () => {
+                    this.tweens.add({
+                        targets: table,
+                        scale: { from: 1, to: 1.1 },
+                        ease: 'Sine.inOut',
+                        loop: -1,
+                        yoyo: true,
+                        duration: 500
+                    });
+                })
             });
     }
 }
 
-class BortherDHI extends AdventureScene {
+class BorterDHI extends AdventureScene {
     constructor() {
         super("borterdhi", "Borter Dining Hall Indoors");
     }
@@ -137,22 +155,110 @@ class BortherDHI extends AdventureScene {
     onEnter() {
         this.showMessage("The indoor dining hall is filled with people eating and talking. There are tables and chairs everywhere.")
 
-        // let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
-        //     .setInteractive()
-        //     .on('pointerover', () => {
-        //         this.showMessage('*giggles*');
-        //         this.tweens.add({
-        //             targets: finish,
-        //             x: this.s + (this.h - 2 * this.s) * Math.random(),
-        //             y: this.s + (this.h - 2 * this.s) * Math.random(),
-        //             ease: 'Sine.inOut',
-        //             duration: 500
-        //         });
-        //     })
-        //     .on('pointerdown', () => this.gotoScene('outro'));
+        let table1 = this.add.text(this.w * 0.6, this.w * 0.2, "⛱ Table")
+            .setFontSize(this.s * 2)
+            .setInteractive()
+
+            .on('pointerover', () => {
+                this.showMessage("This table seems to be deserted...");
+            })
+            .on('pointerdown', () => {
+                this.showMessage("You hop up on the table and look around.");
+                this.tweens.add({
+                    targets: table1,
+                    scale: { from: 1, to: 1.1 },
+                    ease: 'Sine.inOut',
+                    yoyo: true,
+                    duration: 1000
+                });
+                this.time.delayedCall(2000, () => {
+                    this.showMessage("Nothing of substance is here.")
+                })
+            })
+        let table2 = this.add.text(this.w * 0.1, this.w * 0.2, "⛱ Table")
+            .setFontSize(this.s * 2)
+            .setInteractive()
+
+            .on('pointerdown', () => {
+                this.showMessage("You hop up on the table and look around.");
+                this.tweens.add({
+                    targets: table2,
+                    scale: { from: 1, to: 1.1 },
+                    ease: 'Sine.inOut',
+                    yoyo: true,
+                    duration: 1000
+                });
+                this.time.delayedCall(2000, () => {
+                    this.showMessage("Someone didn't clean up after themselves and left some cereal...")
+                })
+            })
+
+        let table3 = this.add.text(this.w * 0.35, this.h * 0.5, "⛱ Table")
+            .setFontSize(this.s * 2)
+            .setInteractive()
+
+            .on('pointerover', () => {
+                this.showMessage("There’s a group of dining hall workers sitting and chatting while on their lunch break. You hear something jingle.");
+            })
+
+            .on('pointerdown', () => {
+                this.showMessage("You hop up on the table and look around.");
+                this.tweens.add({
+                    targets: table3,
+                    scale: { from: 1, to: 1.1 },
+                    ease: 'Sine.inOut',
+                    yoyo: true,
+                    duration: 1000
+                });
+                let key = this.add.text(this.w * 0.3, this.h * 0.4, "🔑 Key")
+                    .setFontSize(this.s * 2)
+                    .setInteractive()
+                    .on('pointerover', () => {
+                        this.showMessage("You see some keys");
+                    })
+                    .on('pointerdown', () => {
+                        this.showMessage("You snatch the worker's key and run away!");
+                        this.time.delayedCall(2000, () => {
+                            this.tweens.add({
+                                targets: key,
+                                scale: { from: 1, to: 0 },
+                                duration: 500,
+                                onComplete: () => bagel.destroy(),
+                                onComplete: () => potato.destroy()
+                            })
+                            this.gotoScene('ge');
+                        });
+                        let potato = this.add.text(this.w * 0.4, this.h * 0.4, "🥔 Potato")
+                            .on('pointerdown', () => {
+                                this.showMessage("You snatch the worker's potato and run away!");
+                                this.time.delayedCall(2000, () => {
+                                    this.tweens.add({
+                                        targets: potato,
+                                        scale: { from: 1, to: 0 },
+                                        duration: 500,
+                                        onComplete: () => bagel.destroy(),
+                                        onComplete: () => potato.destroy()
+                                    })
+                                    this.gotoScene('be');
+                                });
+                            })
+                    })
+            });
     }
 }
-
+// let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
+//     .setInteractive()
+//     .on('pointerover', () => {
+//         this.showMessage('*giggles*');
+//         this.tweens.add({
+//             targets: finish,
+//             x: this.s + (this.h - 2 * this.s) * Math.random(),
+//             y: this.s + (this.h - 2 * this.s) * Math.random(),
+//             ease: 'Sine.inOut',
+//             duration: 500
+//         });
+//     })
+//     .on('pointerdown', () => this.gotoScene('outro'));
 class Intro extends Phaser.Scene {
     constructor() {
         super('intro')
@@ -242,14 +348,25 @@ class Logo extends Phaser.Scene {
     }
 }
 
-class Outro extends Phaser.Scene {
+class GoodEnding extends Phaser.Scene {
     constructor() {
-        super('outro');
+        super('ge');
     }
     create() {
-        this.add.text(50, 50, "That's all!").setFontSize(50);
-        this.add.text(50, 100, "Click anywhere to restart.").setFontSize(20);
-        this.input.on('pointerdown', () => this.scene.start('intro'));
+        this.add.text(50, 50, "You made it into the pantry!").setFontSize(50);
+        this.add.text(this.w, this.h, "Click anywhere to restart..").setFontSize(20);
+        this.input.on('pointerdown', () => this.scene.start('forest'));
+    }
+}
+class BadEnding extends Phaser.Scene {
+    constructor() {
+        super('be');
+    }
+    create() {
+        this.add.text(50, 50, "You were chased out...").setFontSize(50);
+        this.add.text(50, 100, "Tears in your eyes, you make your way back home with your stomach still empty.").setFontSize(20);
+        this.add.text(this.w, this.h, "Click anywhere to restart..").setFontSize(20);
+        this.input.on('pointerdown', () => this.scene.start('forest'));
     }
 }
 
@@ -260,6 +377,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Intro, Logo, Forest, BorterDHO, BortherDHI, Outro],
+    // scene: [Intro, Logo, Forest, BorterDHO, BorterDHI, GoodEnding],
+    scene: [BorterDHI, GoodEnding, BadEnding],
     title: "Adventure Game",
 });
